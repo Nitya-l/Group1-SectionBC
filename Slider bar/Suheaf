@@ -1,0 +1,46 @@
+library(shiny)
+library(dplyr)
+
+#read data
+data <- read.csv("C:/Users/User1/Downloads/IHME_AMR_PATHOGEN_DATA_Y2022M11D21.csv")
+
+#define ui
+ui <- fluidPage(
+  titlePanel("Top 3 Pathogens by Age-Standardized Mortality Rate"),
+  sidebarLayout(
+    sidebarPanel(
+      sliderInput("age_range", "Select Age Range:",
+                  min = 0, max = 49, value = c(0, 4), step = 1)
+    ),
+    mainPanel(
+      tableOutput("top3_table")
+    )
+  )
+)
+
+#define server
+server <- function(input, output) {
+  
+  #filter data based on age range selected by slider
+  age_filter <- reactive({
+    data %>%
+      filter(age_group_start >= input$age_range[1] &
+               age_group_end <= input$age_range[2])
+  })
+  
+  #calculate top 3 pathogens based on age-standardized mortality rate
+  top3_pathogens <- reactive({
+    age_filter() %>%
+      arrange(desc(age_standardized_mortality_rate)) %>%
+      select(disease, age_standardized_mortality_rate) %>%
+      slice(1:3)
+  })
+  
+  #render top 3 pathogens table
+  output$top3_table <- renderTable({
+    top3_pathogens()
+  })
+}
+
+#run app
+shinyApp(ui, server)
