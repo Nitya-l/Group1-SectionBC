@@ -1,6 +1,6 @@
 
-pathogen_data <- read_delim("IHME_Data.csv")
-
+pathogen_data <- read_delim("IHME_Data.CSV")
+library(dplyr)
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
@@ -15,6 +15,8 @@ server <- function(input, output) {
   options_age <- as.list(unique(pathogen_data$age_group_name))
   options_symptoms <- as.list(unique(pathogen_data$infectious_syndrome))
   options_locations <- as.list(unique(pathogen_data$location_name)) 
+  
+  
   #Age options
   output$age <- renderUI({
     selectInput("age", label = "Select Age Group", choices = options_age, selected = "All Ages")
@@ -74,7 +76,21 @@ server <- function(input, output) {
     mean_d <- mean(table_d$val)
     paste("The average number of deaths across all infections and age groups is ",toString(round(mean_d,3)),"in", input$locations)
   })
+  
+  output$bars <- renderPlot ({ 
+    
+    pathogen_data %>%  
+      select(pathogen, infectious_syndrome) %>% 
+      filter(pathogen %in% input$pathogenss) %>% 
+      group_by(pathogen, infectious_syndrome) %>% 
+      summarize(num = n()) %>% 
+      ggplot(aes(num, color = pathogen)) + 
+      geom_bar(position = "dodge", fill = "white")
+    
+  })
 }
+
+
 
 
 # Run the application 

@@ -15,7 +15,9 @@ library(tidyverse)
 library(data.table)
 
 #read data 
-pathogen_data <- read_delim("IHME_Data.csv")
+pathogen_data <- read_delim("IHME_Data.CSV")
+options_pathogens <- as.list(unique(pathogen_data$pathogen))
+ 
 
 # Define UI for application
 ui <- fluidPage(
@@ -43,7 +45,21 @@ ui <- fluidPage(
                  textOutput("react_plot"),
                  plotOutput("plot")),
              ),  
-    ), 
+    ),
+    
+    ##Additional Plot Page 
+    
+    tabPanel("Bar Plot", 
+             sidebarLayout( 
+               sidebarPanel( 
+                 checkboxGroupInput("pathogenss", "Select Pathogen", choices = options_pathogens),
+                 ),
+               mainPanel ( 
+                 plotOutput("bars"),
+                 )
+               ),
+             ),
+    
     #Table page
     tabPanel("Table",
              sidebarLayout(
