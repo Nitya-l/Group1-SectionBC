@@ -9,13 +9,14 @@ pathogen_data <- data_i %>% select(-sex_id, -sex_name, -metric_id, -upper, -lowe
                                                                                                                                                                           "Central Asia", "Central Europe", "Eastern Europe", "Republic of Moldova", 
                                                                                                                                                                           "High-income", "High-income Asia Pacific", "Western Europe",
                                                                                                                                                                           "Southern Sub-Saharan Africa", "Southern Latin America", 
-                                                                                                                                                                          "High-income North America", "Latin America and Caribbean")), metric_name == "Number")
+                                                                                                                                                                          "High-income North America", "Latin America and Caribbean")), metric_name == "Number",measure_name == "Deaths")
+options_pathogens <- as.list(unique(pathogen_data$pathogen))
 
 # Define server logic 
 server <- function(input, output) {
   #sample output
   output$sample <- renderTable({
-    sample <- sample_n(pathogen_data,5)
+    sample <- pathogen_data %>% sample_n(5)
     sample
   })
   
