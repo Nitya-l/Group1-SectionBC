@@ -119,9 +119,34 @@ ui <- fluidPage(
                )
              ),
     ),
-    
+    tabPanel("Conclusion and Takeaways",
+             h2("Description of a Notable Insight/Pattern Discovered in Project"),
+             p("Overall, an insight/pattern discovered from our project and dataset is that these bacterial infections and pathogens are highly prevalent across all age groups and locations globally. While there are certain bacterial syndromes and pathogens that cause the most deaths in certain age groups and locations, it is mainly consistent. This illustrates that these infections are caused by similar issues in these countries and the health community can take measures to combat the large number of deaths occurring."), 
+             
+             h2("\n Specific Data to Demonstrate Insight"),
+             p("From the estimated infectious-related deaths in 2019, there were approximately 7.7 million deaths associated with the 33 bacterial pathogens from the dataset. Below, are the questions we were aiming to specifically address in this project (for our target audience):"), 
+             h3(" \n 1) Which pathogens are responsible for the largest number of deaths by location"),
+             p("The top five pathogens that were responsible for the largest number of deaths by location were Staphylococcus auereus, Escherichia coli, Streptococcus pneumoniae, Klebsiella pneumoniae, and Pseudomonas aeruginosa. These five pathogens contributed to approximately 54.9% of deaths globally."), 
+             h3("\n 2) Which pathogens are responsible for the largest number of deaths by age?"), 
+             p("Across all age groups, the maximum number of deaths is approximately 12535446.23, with the leading pathogens being the same five that are listed above (Staphylococcus auereus, Escherichia coli, Streptococcus pneumoniae, Klebsiella pneumoniae, and Pseudomonas aeruginosa). More specifically, among children younger than 5 years, S pneumoniae caused the most deaths."), 
+             h3("\n 3) Are pathogens easily identifiable by their symptoms?"),
+             p("Except for 2 pathogens,"),
+             h3("\n 4) Common symptoms by age group?"),
+             p("Almost all bacterial infections were present across all age groups and in mostly equal amounts except for gonorrhea and chlamydia which were only present in ages 5+. Additionally, this suggests that symptoms do not vary based on age for the 33 pathogens, however, certain symptoms such as bloodstream infections are more common than others (ex: typhoid fever)."),
+             h2("\n Broader Implications of Insights"),
+             p("The insights and dataset demonstrate that there is a significant amount of health loss globally due to these various infectious syndromes and pathogens. The deaths caused by these bacteria were the second leading cause of global deaths in 2019, and therefore, infectious disease must be prioritized. Health organizations such as World Health Organization (WHO) or the National Association of Country and City Health Officials (NACCHO) can take action to address and prevent the spread of such infections across so many locations. Moreover, health professionals and epidemiologists can work towards studying this data to develop antibiotics, vaccines, and conduct analysis on how to combat the spread of these pathogens. These developments will aid in reducing deaths in various locations and age groups across the world."), 
+             
+             h2("\n Data Quality"),
+             p("The data quality of the dataset is reliable as the estimates were made by using a total of 343 million individual records and 11,361 study location years. Additionally, the records were analyzed data from hospital discharges, cause of death, tissue sampling, literature reviews, microbiology lab results from hospitals nationally as well as muti-national surveillance systems. The data was collected by researchers at the Institute for Health Metrics and Evaluation (IHME) as well as University of Oxford. Therefore, taking these factors into account, there is substantial credibility behind the estimates provided and it does its best to be as unbiased as possible. 
+             However, there is an ethical issue present as this data is accessed through the GHDx: Global Health Data Exchange which is a catalog of vital statistics and health related data, fully available to the public, which can be harmful to the populations that the data was taken from. There is a lack of confidentiality for these populations, and there may be intentional misuse of the data that can affect the locations and age groups from the data."),
+             
+             h2("\n How to Advance the Project"), 
+             p("To advance the project, we could show the user what pathogen they are in most danger of depending on their location, symptoms, and age group by including widgets in which they can input this information, which the app will thus compute. Additionally, after providing the pathogen they are in most danger of, the project could provide important measures to take to stay safe and continue prevention of the spread of these infections so that the user can stay informed through an accessible application."),
     ), 
   )
+    
+    )
+  
 
 # Run the application 
 #shinyApp(ui = ui, server = server)
