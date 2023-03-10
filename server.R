@@ -79,12 +79,12 @@ server <- function(input, output) {
     pathogen_data %>%  
       select(pathogen, infectious_syndrome) %>% 
       filter(pathogen %in% input$pathogenss) %>% 
-      group_by(pathogen, infectious_syndrome) %>% 
-      summarize(num = n()) %>% 
-      ggplot(aes(num, color = pathogen)) + 
-      geom_bar(position = "dodge", fill = "white")+
+      group_by(pathogen) %>% 
+      summarize(num = n(),uniq = n_distinct(infectious_syndrome)) %>% 
+      ggplot(aes(num,uniq, color = pathogen)) + 
+      geom_col(position = "dodge", fill = "white")+
       ggtitle("Pathogens and Associated Bacterial Infections")+
-      labs(x = "Number of Observations", y = "#Infections associated with pathogen", color = "Symptoms")
+      labs(x = "Number of Observations", y = "#Infections associated with pathogen", color = "pathogen")
     
     
   })
@@ -93,8 +93,8 @@ server <- function(input, output) {
     path <- pathogen_data %>%  
       select(pathogen, infectious_syndrome) %>% 
       filter(pathogen %in% input$pathogenss)
-    unique_symp <- path %>% select(infectious_syndrome) %>% unique()
-    result <- paste(unique_symp, sep = ",")
+    unique_symp <- unique(path$infectious_syndrome)
+    result <- toString(unique_symp)
     paste("The symptoms associated with the pathogens selected are:", result)
   })
 
@@ -181,7 +181,7 @@ server <- function(input, output) {
     max_deaths <- round(max(data$deaths), 2)
     
     if (input$age_group == "All Ages") {
-      paste("The minimum deaths across all age groups for the selected location and pathogens is", 
+      paste("The minimum deaths caused by the 33 pathogens across all age groups is", 
             round(min_deaths, 2), "and the maximum is", round(max_deaths, 2), ".")
     } else {
       age_data <- filtered_data() %>%
@@ -192,7 +192,7 @@ server <- function(input, output) {
       min_age_deaths <- round(min(age_data$deaths), 2)
       max_age_deaths <- round(max(age_data$deaths), 2)
       
-      paste("The minimum deaths for the selected age group, location, and pathogens is", 
+      paste("The minimum deaths caused by the 33 pathogens within the selected age group is", 
             round(min_age_deaths, 2), "and the maximum is", round(max_age_deaths, 2),".")
     }
   })
