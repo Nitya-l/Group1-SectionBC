@@ -14,50 +14,47 @@ options_pathogens <- as.list(unique(pathogen_data$pathogen))
 
 # Define server logic 
 server <- function(input, output) {
-  #sample output
+  #sample data table on about page output
   output$sample <- renderTable({
     sample <- pathogen_data %>% sample_n(5)
     sample
   })
-  
-  #Options, vectors 
+#Symptoms and age group page 
+  #Options vectors 
   options_age <- as.list(unique(pathogen_data$age_group_name))
   options_symptoms <- as.list(unique(pathogen_data$infectious_syndrome))
-  options_locations <- as.list(unique(pathogen_data$location_name)) 
-  
-  
-  #Age options
+
+  #Age options widget 
   output$age <- renderUI({
     selectInput("age", label = "Select Age Group", choices = options_age, selected = "All Ages")
   })
-  #Symptoms options
+  #Symptoms options widget 
   output$symptoms <- renderUI({
     checkboxGroupInput("symptoms", label = "Select Symptoms", choices = options_symptoms, selected = options_symptoms) 
   })
-  #Location options
-  output$locations <- renderUI({
-    radioButtons("locations", label = "Select Country", choices = options_locations, selected = "China")
-  })
-  
-  #visual options 
+
+  #visual options widget 
   output$visual <- renderUI({
     radioButtons("Plot type", label = "Plot type", choices = c("Bar Graph", "Dot Plot")) 
   })
   
   # Plot output 
   output$plot <- renderPlot({
-    #Data filter by age 
+    #Data filter by age selected 
     if(input$age == "All Ages"){
       df <- pathogen_data %>% select(age_group_name,infectious_syndrome,pathogen) %>% filter(infectious_syndrome %in% input$symptoms) %>% group_by(age_group_name, infectious_syndrome) %>%  summarize(num = n()) 
     }
     else{
       df <- pathogen_data %>% select(age_group_name,infectious_syndrome,pathogen) %>% filter(age_group_name %in% input$age, infectious_syndrome %in% input$symptoms) %>% group_by(age_group_name,infectious_syndrome) %>%  summarize(num = n())
     }
+    
+    #reactive text output for symptoms vs age page
     output$react_plot <- renderText({
       n_sum <- sum(df$num)
       paste("There are",toString(n_sum),"total observations in the subset you have selected")
     })
-    #Plot creation 
+    
+    #ggplot for graph type choices  
     if(input$visual == "Bar Graph"){
       ggplot(df, aes(num, color = infectious_syndrome))+ 
         geom_bar(position = "Dodge", fill = "white")+
@@ -73,7 +70,7 @@ server <- function(input, output) {
   })
 
   
-  #Pathogen vs Symptoms Bar graph
+#Pathogen vs Symptoms page 
   output$bars <- renderPlot ({ 
     
     pathogen_data %>%  
@@ -98,7 +95,7 @@ server <- function(input, output) {
     paste("The symptoms associated with the pathogens selected are:", result)
   })
 
-  
+#Pathogen and deaths based on location page  
   # Filter the data based on user inputs
   filtered_data <- reactive({
     pathogen_data %>%
@@ -159,7 +156,7 @@ server <- function(input, output) {
     paste("The pathogen that causes the most deaths is", max_pathogen, "with", 
           round(max_deaths, 2), "deaths.")
   })
-  
+#Pathogen and deaths based on age group page
   # Render the table on table page
   output$pathogen_table <- renderTable({
     data <- pathogen_data %>%

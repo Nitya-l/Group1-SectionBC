@@ -15,7 +15,7 @@ library(readr)
 library(tidyverse)
 library(data.table)
 
-#read data 
+#read in data 
 data_i <- read_delim("IHME_Data.csv")
 pathogen_data <- data_i %>% select(-sex_id, -sex_name, -metric_id, -upper, -lower, -measure_id, -cause_id, cause_name) %>% filter(!(location_name %in% c(
                                                                                                                                                                           "Southeast Asia, East Asia, and Oceania", 
@@ -45,7 +45,7 @@ ui <- fluidPage(
              p("\n Below is a small random sample of the pathogen data set where val is equal to the # of estimated deaths."), 
              tableOutput("sample"), 
     ), 
-    #Pathogen and Death Rate
+    #Pathogen and Death Rate by Age page
     tabPanel("Pathogen and Associated Number of Deaths by Age",
              fluidRow(
                column(
@@ -63,7 +63,7 @@ ui <- fluidPage(
              ),
     ), 
 
-    #Pathogen and Death rate based on Location 
+    #Pathogen and Death rate based on Location page
     tabPanel("Pathogen and Associated Number of Deaths by Location ",
              fluidRow(
                column(
@@ -94,7 +94,7 @@ ui <- fluidPage(
                )
              )
     ),
-    #Infection and Age group
+    #Infection and Age group page
     tabPanel("Bacterial Infections and Age Groups",
              sidebarLayout(
                sidebarPanel(
@@ -107,7 +107,7 @@ ui <- fluidPage(
                  plotOutput("plot")),
              ),  
     ),
-    #Pathogen and Bacterial Infections 
+    #Pathogen and Bacterial Infections page
     tabPanel("Pathogens and Bacterial Infections", 
              sidebarLayout( 
                sidebarPanel( 
@@ -120,6 +120,7 @@ ui <- fluidPage(
                )
              ),
     ),
+    #Conclusion page
     tabPanel("Conclusion and Takeaways",
              h2("Description of a Notable Insight/Pattern Discovered in Project"),
               p("Overall, an insight/pattern discovered from our project and dataset is that these bacterial infections and pathogens are highly prevalent across all age groups and locations globally. While there are certain bacterial syndromes and pathogens that cause the most deaths in certain age groups and locations, it is mainly consistent. This illustrates that these infections are caused by similar issues in these countries and the health community can take measures against the pathogens and bacterial infections to combat the large number of deaths occurring. Examples of such measures include vaccine development for the pathogens, or medicine development for the infections caused by the pathogens."), 
